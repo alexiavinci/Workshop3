@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Cover de volant en cuir",
+        "description": "Couverture de volant en cuir premium pour une meilleure prise en main et un confort accru.",
+        "price": 25.99,
+        "category": "Accessoires int\u00e9rieurs",
+        "stock": 150
+    },
+    {
+        "id": 2,
+        "name": "Support de t\u00e9l\u00e9phone pour voiture",
+        "description": "Support de t\u00e9l\u00e9phone universel avec fixation sur le tableau de bord ou la grille d'a\u00e9ration.",
+        "price": 14.99,
+        "category": "\u00c9lectronique",
+        "stock": 200
+    },
+    {
+        "id": 3,
+        "name": "D\u00e9sodorisant de voiture",
+        "description": "D\u00e9sodorisant longue dur\u00e9e pour une fra\u00eecheur continue dans votre v\u00e9hicule.",
+        "price": 4.99,
+        "category": "Entretien",
+        "stock": 500
+    }
+]

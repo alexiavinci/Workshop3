@@ -1,0 +1,153 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div id="cartItems"></div>
+    
+    <button onclick="placeOrder()">Place Order</button>
+    <button onclick="window.location.href='index.html';">Continue Shopping</button>
+
+    <script>
+        const cartItemsContainer = document.getElementById('cartItems');
+        const userId = '1'; // Using user ID 1 for simplicity
+
+        async function loadCartItems() {
+            const response = await fetch(`/cart/${userId}`);
+            //const response = await fetch(`/cart/${userId}`);
+            const cartItems = await response.json();
+            cartProductIds = cartItems.map(item => item.productId); // Collect product IDs
+            //cartItemsContainer.innerHTML = ''; // Clear current items
+            cartItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <p>Product ID: ${item.productId}, Quantity: ${item.quantity}</p>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
+
+        async function placeOrder() {
+            // This function will send a POST request to place the order
+            // Redirect to confirmation page on success
+            // const response = await fetch(`/orders`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ productIds: [/* Array of product IDs from the cart */] }), // Simplified for illustration
+            // });
+
+            // if (response.ok) {
+            //     window.location.href = 'confirmation.html';
+            // }
+
+            const response = await fetch(`/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productIds: cartProductIds }), // Utilisez cartProductIds ici
+            });
+
+            if (response.ok) {
+                window.location.href = 'confirmation.html';
+            } else {
+                alert('Failed to place order');
+            }
+        }
+
+        loadCartItems();
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div id="cartItems"></div>
+    
+    <button onclick="placeOrder()">Place Order</button>
+    <button onclick="window.location.href='index.html';">Continue Shopping</button>
+
+    <script>
+        const cartItemsContainer = document.getElementById('cartItems');
+        const userId = '1'; // Using user ID 1 for simplicity
+        let cartProductIds = [];
+
+        async function loadCartItems() {
+            const response = await fetch(`/cart/${userId}`);
+            const cartItems = await response.json();
+            cartProductIds = cartItems.map(item => item.productId); // Collect product IDs
+
+            // Clear current items
+            cartItemsContainer.innerHTML = '';
+            
+            // Fetch each product details and display
+            for (const item of cartItems) {
+                const productResponse = await fetch(`/products/${item.productId}`);
+                if (productResponse.ok) {
+                    const product = await productResponse.json();
+                    displayCartItem(product, item.quantity);
+                }
+            }
+        }
+
+        function displayCartItem(product, quantity) {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'cart-item';
+            itemElement.innerHTML = `
+                <strong>${product.name}</strong>
+                <p>Price: $${product.price}</p>
+                <p>Quantity: ${quantity}</p>
+            `;
+            cartItemsContainer.appendChild(itemElement);
+        }
+
+        async function placeOrder() {
+            const response = await fetch(`/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productIds: cartProductIds }),
+            });
+
+            if (response.ok) {
+                window.location.href = 'confirmation.html';
+            } else {
+                alert('Failed to place order');
+            }
+        }
+
+        loadCartItems();
+    </script>
+</body>
+</html>
+
